@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 function ContextWrapper(props) {
   const [monthIndex, setMonthIndex] = useState(dayjs().month());
   return (
-    <GlobalContext.Provier value={{ monthIndex, setMonthIndex }}>
+    <GlobalContext.Provider value={{ monthIndex, setMonthIndex }}>
       {props.children}
-    </GlobalContext.Provier>
+    </GlobalContext.Provider>
   );
 }
 

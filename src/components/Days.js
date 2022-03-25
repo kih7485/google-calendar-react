@@ -6,19 +6,18 @@ function Days({ day, rowIdx }) {
   const {
     setDaySelected,
     setShowEventModal,
-    savedEvents,
-    selectedEvent,
+    filteredEvents,
     setSelectedEvent,
   } = useContext(GlobalContext);
 
   const [dayEvents, setDayEvents] = useState([]);
 
   useEffect(() => {
-    const events = savedEvents.filter(
+    const events = filteredEvents.filter(
       (evt) => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY")
     );
     setDayEvents(events);
-  }, [savedEvents, day]);
+  }, [filteredEvents, day]);
 
   function getCurrentDayClass() {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY")

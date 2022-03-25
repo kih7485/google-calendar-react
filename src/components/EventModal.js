@@ -22,9 +22,13 @@ function EventModal() {
       description,
       label: selectedLabel,
       day: daySelected.valueOf(),
-      id: Date.now(),
+      id: selectedEvent ? selectedEvent.id : Date.now(),
     };
-    dispatchCalEvent({ type: "push", payload: calendarEvent });
+    if (selectedEvent) {
+      dispatchCalEvent({ type: "update", payload: calendarEvent });
+    } else {
+      dispatchCalEvent({ type: "push", payload: calendarEvent });
+    }
     setShowEventModal(false);
   };
   return (
@@ -34,9 +38,24 @@ function EventModal() {
           <span className="material-icons-outlined text-gray-400">
             drag_handle
           </span>
-          <button onClick={() => setShowEventModal(false)}>
-            <span className="material-icons-outlined text-gray-400">close</span>
-          </button>
+          <div>
+            {selectedEvent && (
+              <span
+                className="material-icons-outlined text-gray-400 cursor-pointer"
+                onClick={() => {
+                  dispatchCalEvent({ type: "delete", payload: selectedEvent });
+                  setShowEventModal(false);
+                }}
+              >
+                delete
+              </span>
+            )}
+            <button onClick={() => setShowEventModal(false)}>
+              <span className="material-icons-outlined text-gray-400">
+                close
+              </span>
+            </button>
+          </div>
         </header>
         <div className="p-3">
           <div className="grid grid-cols-1/5 items-end gap-y-7">

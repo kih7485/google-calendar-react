@@ -3,6 +3,10 @@ import React, { useContext, useState, useEffect } from "react";
 import GlobalContext from "../context/GlobalContext";
 
 function Days({ day, rowIdx }) {
+  let posX = 0,
+    posY = 0,
+    originalX = 0,
+    originalY = 0;
   const {
     setDaySelected,
     setShowEventModal,
@@ -24,6 +28,25 @@ function Days({ day, rowIdx }) {
       ? "bg-blue-600 text-white rounded-full w-7"
       : "";
   }
+
+  const dragStartHandler = (e) => {
+    const img = new Image();
+    e.dataTransfer.setDragImage(img, 0, 0);
+
+    posX = e.clientX;
+    posY = e.clientY;
+
+    originalX = e.target.offsetLeft;
+    originalY = e.target.offsetTop;
+    console.log(posX, posY);
+  };
+
+  const dragHandler = (e) => {
+    e.target.style.left = `${e.target.offsetLeft + e.clientX - posX}px`;
+    e.target.style.top = `${e.target.offsetTop + e.clientY - posY}px`;
+    posY = e.clientY;
+    posX = e.clientX;
+  };
   return (
     <div className="border border-gray-200 flex flex-col">
       <header className="flex flex-col items-center">
@@ -36,6 +59,9 @@ function Days({ day, rowIdx }) {
       </header>
       <div
         className="flex-1 cursor-pointer"
+        onDragStart={dragStartHandler}
+        onDrag={dragHandler}
+        onDragEnd={() => alert(222)}
         onClick={() => {
           setDaySelected(day);
           setShowEventModal(true);
